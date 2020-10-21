@@ -21,7 +21,7 @@ repos = list(repo.glob("*/"))
 #gather all img paths by type in a dictionary
 img_grp = {}
 for i in repos:
-#    globals()['%s' % str(i).split('\\')[-1]] = glob.glob(str(i)+'\\*.jpg')
+    globals()['%s' % str(i).split('\\')[-1]] = glob.glob(str(i)+'\\*.jpg')
     img_grp[str(i).split('\\')[-1]] = globals()['%s' % str(i).split('\\')[-1]]
 
 #convert the img paths into bytes
@@ -38,13 +38,41 @@ for i in img_grpBY.keys():
 shap = list(img_grpTEN['metal'][0].shape)
 
 #sort tensors by type in separate files
-for i in img_grpTEN.keys():
-    globals()['%s' % i] = img_grpTEN[i]
+#for i in img_grpTEN.keys():
+#    globals()['%s' % i] = img_grpTEN[i]
 
 #gather all tensors in a list
-all = cardboard + glass + metal + paper + plastic + trash
-
-tf_train_set = tf.data.Dataset.from_tensor_slices(all)
+allt = cardboard + glass + metal + paper + plastic + trash
 
 
+tf_train_set = tf.data.Dataset.from_tensor_slices(allt)
+
+#get labels for images
+label_index = {}
+for i,j in enumerate(repos):
+    label_index[str(j).split('\\')[-1]] = i
+
+label = []
+for i in allt:
+    for j in repos:
+        if str(j).split('\\')[-1] in i:
+            label.append(label_index[str(j).split('\\')[-1]])
+
+#image preprocessing
+def load_and_preprocess_images(img):
+  img = tf.io.read_file(img)
+  img = tf.image.decode_jpeg(img, channels=3)
+  img = tf.image.resize(img, [192, 192])
+  img = tf.image.random_flip_left_right(img)
+  img = tf.image.random_contrast(img, 0.50, 0.90)
+  img = img / 255.0
+  
+  return img
+
+tf_train_set = tf_train_set.map(load_and_preprocess_images)
+
+tf_labels = tf.data.Dataset.from_tensor_slices(label)
+
+full_ds = tf.data.Dataset.zip((tf_train_set, tf_labels))
+full_ds = full_ds.shuffle(len(allt)).batch(16)
 
