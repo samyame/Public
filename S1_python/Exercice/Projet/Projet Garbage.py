@@ -11,9 +11,10 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import pathlib
 import glob
+from keras.preprocessing.image import ImageDataGenerator, array_to_img, load_img, img_to_array
 
 #path du repertoire maitre
-repo = pathlib.Path(r"C:\Users\tashi\Downloads\Projet\Garbage classification\Garbage classification")
+repo = pathlib.Path(r"C:\Users\tashi\Documents\GitHub\jedha\S1_python\Exercice\Projet\dataset")
 
 #paths des repertoires
 repos = list(repo.glob("*/"))
@@ -41,6 +42,7 @@ shap = list(img_grpTEN['metal'][0].shape)
 #for i in img_grpTEN.keys():
 #    globals()['%s' % i] = img_grpTEN[i]
 
+
 #gather all tensors in a list
 allt = cardboard + glass + metal + paper + plastic + trash
 
@@ -60,10 +62,10 @@ for i in allt:
 
 #image preprocessing
 def load_and_preprocess_images(img):
-  img = tf.io.read_file(img)
-  img = tf.image.decode_jpeg(img, channels=3)
-  img = tf.image.resize(img, [192, 192])
-  img = tf.image.random_flip_left_right(img)
+  img = tf.io.read_file(img) #convert to bytes
+  img = tf.image.decode_jpeg(img, channels=3) #convert to tensor
+  img = tf.image.resize(img, [100, 100]) #resize shape
+  img = tf.image.random_flip_left_right(img) #
   img = tf.image.random_contrast(img, 0.50, 0.90)
   img = img / 255.0
   
@@ -76,3 +78,33 @@ tf_labels = tf.data.Dataset.from_tensor_slices(label)
 full_ds = tf.data.Dataset.zip((tf_train_set, tf_labels))
 full_ds = full_ds.shuffle(len(allt)).batch(16)
 
+#Création du modèle
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(filters=32, kernel_size=3, padding="same", activation="relu", input_shape=[100, 100, 3]),
+    tf.keras.layers.MaxPool2D(pool_size=2, padding="same"), #, strides=2, padding='valid'),
+    tf.keras.layers.Conv2D(filters=32, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.MaxPool2D(pool_size=2, padding="same"), # strides=2, padding='valid'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units=16, activation='relu'),
+    tf.keras.layers.Dropout(0.05),
+    tf.keras.layers.Dense(units=8, activation ="relu"),
+    tf.keras.layers.Dense(units=10, activation ="relu"),
+    tf.keras.layers.Dense(units=6, activation='softmax')
+    ])
+
+model.summary()
+
+initial_learning_rate = 0.001
+
+lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate,
+    decay_steps=6000,
+    decay_rate=0.96,
+    staircase=True)
+
+model.compile(optimizer = tf.keras.optimizers.Adam(lr_schedule),
+              loss= tf.keras.losses.SparseCategoricalCrossentropy(),
+              metrics = [tf.keras.metrics.SparseCategoricalAccuracy()])
+
+history = model.fit(full_ds, epochs=100, batch_size = 16)
