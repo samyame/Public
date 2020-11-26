@@ -77,7 +77,7 @@ for i in valt:
 def load_and_preprocess_images(img):
   img = tf.io.read_file(img) #convert to bytes
   img = tf.image.decode_jpeg(img, channels=3) #convert to tensor
-  img = tf.image.resize(img, [150, 150]) #resize shape
+  img = tf.image.resize(img, [100, 100]) #resize shape
   img = tf.image.random_flip_left_right(img) #
   img = tf.image.random_contrast(img, 0.50, 0.90)
   img = img / 255.0
@@ -89,7 +89,7 @@ tf_train_set = tf_train_set.map(load_and_preprocess_images)
 def load_valid_images(img):
   img = tf.io.read_file(img)
   img = tf.image.decode_jpeg(img, channels=3)
-  img = tf.image.resize(img, [150, 150])
+  img = tf.image.resize(img, [100, 100])
   img = img / 255.0
   
   return img
