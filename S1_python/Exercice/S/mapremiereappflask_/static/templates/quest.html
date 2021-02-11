@@ -1,8 +1,0 @@
-{% extends "layout.html" %}
-{% block content %}
-<form action="http://127.0.0.1:5000/predict" method="POST">
-        <label>Année d'expérience</label>
-        <input type="integer" name="YearsExperience" value="10" autofocus>
-        <input type="submit" value="Let's predict salary!">
-</form>
-{% endblock %}
