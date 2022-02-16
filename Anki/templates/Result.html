@@ -1,0 +1,24 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap     
+{% endblock %}
+{% block headline%}
+    <h2>Your Choice:</h2>    
+{% endblock %}
+{% block content%}
+<style>
+h3 {text-align: center;}
+h4 {text-align: center;}
+</style>
+  <h4>"{{choicetxt}}" is {{result}}</h4>
+  {%if result == False%}
+  <h4>Correct Answer is {{correct}}</h4>
+  {% endif %}
+  <h4>Phonetic : {{phonetic}}</h4>
+  <h3>Your score is {{score}}/{{count}}</h3>
+
+  <a href="{{ url_for('test') }}">Next Question!</a><br><br>
+  <a href="{{ url_for('start') }}">Change Mode</a><br><br>
+  <a href="{{ url_for('finish') }}">Finish</a>
+  {% endblock %}

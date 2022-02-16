@@ -1,0 +1,60 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap - Test   
+{% endblock %}
+{% block headline%}
+    Anki Test    
+{% endblock %}
+{% block content%}
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Type</th>
+                <th scope="col">Language</th>
+                <th scope="col">Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+                <tr>
+                {%if GramVoc == "G"%}
+                    <td>Grammar</td>
+                {% else %}
+                    <td>Vocabulary</td>
+                {% endif %}
+                {%if mode == "E"%}
+                    <td>English</td>
+                {% else %}
+                    <td>Japanese</td>
+                {% endif %}
+                {%if mode2 == "Y"%}
+                    <td>Difficult</td>
+                {% else %}
+                    <td>Normal</td>
+                {% endif %}
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Question :{{question}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for item in range(proplen) %}
+                <tr>
+                    <td>
+                    <form action="/result" method="post">
+                    <input type="submit" name="submit_button" value={{item}}> {{propositions[item]}}
+                    </td>                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%endblock%}
+    

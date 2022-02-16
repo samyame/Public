@@ -1,0 +1,16 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap     
+{% endblock %}
+{% block headline%}
+    <h2>CHOOSE DIFFICULTY</h2>
+{% endblock %}
+{% block content%}
+  <h4>Normal or Difficult</h4>
+  <form method="POST" action="/test">
+      Normal<input type="checkbox" value="N" name = "diff">
+      Difficult<input type="checkbox" value="Y" name = "diff">
+      <input type="submit">
+  </form>
+{% endblock %}

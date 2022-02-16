@@ -1,0 +1,40 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap     
+{% endblock %}
+{% block headline%}
+    <h2>CHOOSE THE TYPE OF EXERCISES</h2>    
+{% endblock %}
+{% block content%}
+<style>
+h4 {text-align: center;}
+input {text-align: center;}
+form {text-align: center;}
+</style>
+  <h4>Vocabulary or Grammar</h4>
+  <br>
+  <br>
+  <form method="POST" action="/test">
+      Vocabulary&nbsp;<input type="checkbox" value="V" name = "text">
+      <br>
+      Grammar&nbsp;<input type="checkbox" value="G" name = "text">
+      <br>
+      <br>
+      <h4>English or Japanese</h4>
+      <br>
+      English&nbsp;<input type="checkbox" value="E" name = "lang">
+      <br>
+      Japanese&nbsp;<input type="checkbox" value="J" name = "lang">
+      <br>
+      <br>
+      <h4>Normal or Difficult</h4>
+      <br>
+      Normal&nbsp;<input type="checkbox" value="N" name = "diff">
+      <br>
+      Difficult&nbsp;<input type="checkbox" value="Y" name = "diff">
+      <br>
+      <br>
+      <input type="submit">
+  </form>
+{% endblock %}

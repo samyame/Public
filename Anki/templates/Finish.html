@@ -1,0 +1,41 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap - Scoreboard   
+{% endblock %}
+{% block headline%}
+    Scoreboard    
+{% endblock %}
+{% block content%}
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Highest Scores</th>
+                <th scope="col">Ratio</th>
+                <th scope="col">Date</th>
+                <th scope="col">Mode</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for quer in query %}
+                <tr>
+                    <td>
+                    {{quer.scor}}/{{quer.coun}}
+                    </td>
+                    <td>
+                    {{quer.ratio}}%
+                    </td>
+                    <td>
+                    {{quer.dat}}
+                    </td>
+                    <td>
+                    {{quer.mode}}
+                    </td>             
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%endblock%}
+    

@@ -1,0 +1,16 @@
+<!doctype html>
+{% extends 'tempCourse.html'%}
+{% block title%}
+   Anki Jap     
+{% endblock %}
+{% block headline%}
+    <h2>CHOOSE THE TARGET LANGUAGE</h2>   
+{% endblock %}
+{% block content%}
+  <h4>English or Japanese</h4>
+  <form method="POST" action="/2">
+      English<input type="checkbox" value="E" name = "lang">
+      Japanese<input type="checkbox" value="J" name = "lang">
+      <input type="submit">
+  </form>
+{% endblock %}
