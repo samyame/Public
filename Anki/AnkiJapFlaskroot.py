@@ -13,8 +13,8 @@ import random
 
 
 #Data Preparation
-filename = r'C:\Users\tashi\Documents\Vocab - Feuille 1.csv'
-filename2 = r'C:\Users\tashi\Documents\Vocab - Grammar.txt'
+filename = 'Vocab - Feuille 1.csv'
+filename2 = 'Vocab - Grammar.txt'
 filename3 = 'difficult_record.csv'
 df1 = pd.read_csv(filename, header = 0)
 df1 = df1.iloc[:,:3]
